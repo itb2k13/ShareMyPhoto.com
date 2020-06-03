@@ -1,27 +1,32 @@
 ﻿using Amazon;
 using Amazon.S3;
 using Amazon.S3.Transfer;
-using CsQuery;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using ShareMyPhoto.lib;
+using ShareMyPhoto.models;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
 
 namespace ShareMyPhoto.com.Controllers
 {
- 
+
     [Route("api/[controller]")]
     [ApiController]
     public class PhotoController : ControllerBase
     {
         private static IAmazonS3 s3Client;
+        private readonly IScraper _scraper;
         private readonly string bucketName;
 
-        public PhotoController(IConfiguration config)
+        public PhotoController(IConfiguration config, IScraper scraper)
         {
+            _scraper = scraper;
             s3Client = new AmazonS3Client(config.GetValue<string>("awsAccessKeyId"), config.GetValue<string>("awsSecretAccessKey"), RegionEndpoint.EUWest2);
             bucketName = config.GetValue<string>("bucketName");
         }
@@ -36,18 +41,16 @@ namespace ShareMyPhoto.com.Controllers
             {
                 for (int i = 0; i <= 2; i++)
                 {
-                    var result = await FindImageFileAsync(url);
+                    var result = await _scraper.FindImageSourcesAsync(url);
 
                     if (result.Success && result.Message.Length > 0)
                     {
                         userResult.IntermediateUrl = result.Message;
-                        userResult.IntermediateDownloadAttempts = i + 1;
                         url = result.Message;
                         break;
                     }
                     else
                     {
-                        userResult.IntermediateDownloadAttempts = i + 1;
                         userResult.ErrorMessage = result.Message;
                     }
                 }
@@ -85,39 +88,6 @@ namespace ShareMyPhoto.com.Controllers
             }
         }
 
-        private async Task<Result> FindImageFileAsync(string url)
-        {
-            try
-            {
-                var result = new Result();
-
-                using (var wc = new WebClient())
-                {
-                    var data = await wc.DownloadStringTaskAsync(new Uri(url));
-                    var dom = CQ.Create(data);
-
-                    dom["img"].Each(x =>
-                    {
-
-                        var src = x.Attributes["src"];
-
-                        if (src.StartsWith("https://lh3.googleusercontent.com"))
-                        {
-                            result.Message = $"{src.Split('=')[0]}=w1024";
-                            result.Success = true;
-                        }
-
-                    });
-                }
-
-                return result;
-
-            }
-            catch (Exception e)
-            {
-                return new Result { Message = $"{e.Message}" };
-            }
-        }
 
         private async Task<Result> DownloadFileAsync(string url)
         {
