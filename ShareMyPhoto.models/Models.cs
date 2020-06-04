@@ -1,6 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace ShareMyPhoto.models
 {
@@ -8,12 +8,6 @@ namespace ShareMyPhoto.models
     {
         public string Key { get; set; }
         public string Value { get; set; }
-    }
-
-    public class PostResult
-    {
-        public dynamic info { get; set; }
-        public string content { get; set; }
     }
 
     public class Image
@@ -32,11 +26,53 @@ namespace ShareMyPhoto.models
 
     public class UserResult
     {
-        public string OriginalUrl { get; set; }
-        public string IntermediateUrl { get; set; }
-        public string ShareUrl { get; set; }
+        public class UserResultInput
+        {
+
+            public UserResultInput(string originalUrl, string bucketName, int width, string keyName)
+            {
+                OriginalUrl = originalUrl;
+                BucketName = bucketName;
+                Width = width;
+                KeyName = keyName;
+            }
+
+            [JsonIgnore]
+            public string BucketName { get; }
+            [JsonIgnore]
+            public int Width { get; }
+            [JsonIgnore]
+            public string KeyName { get; }
+            public string OriginalUrl { get; }
+            [JsonIgnore]
+            public string IntermediateUrl { get; set; }
+        }
+
+        public class UserResultOutput
+        {
+            public string _originalUrl;
+            public string _bucketName;
+            public string _keyName;
+
+            public UserResultOutput(string originalUrl, string bucketName, string keyName)
+            {
+                _originalUrl = originalUrl;
+                _bucketName = bucketName;
+                _keyName = keyName;
+            }
+            public string Share => SizeInBytes > 0 ? $"https://{_bucketName}/{_keyName}" : null;
+            public long SizeInBytes { get; set; }
+        }
+
+        public UserResult(string originalUrl, string bucketName, int width, string keyName)
+        {
+            Input = new UserResultInput(originalUrl, bucketName, width, keyName);
+            Output = new UserResultOutput(originalUrl, bucketName, keyName);
+        }
+
+        public UserResultInput Input { get; }
+        public UserResultOutput Output { get; set; }
         public string ErrorMessage { get; set; }
-        public bool Success { get; set; }
-        public long SizeInBytes { get; set; }
+        public bool Success { get; set; }        
     }
 }

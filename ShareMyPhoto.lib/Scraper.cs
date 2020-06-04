@@ -17,7 +17,7 @@ namespace ShareMyPhoto.lib
                 return s;
         }
 
-        public async Task<Result> FindImageSourcesAsync(string url)
+        public async Task<Result> FindImageSourcesAsync(string url, int width)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace ShareMyPhoto.lib
 
                         if (src.StartsWith("https://lh3.googleusercontent.com"))
                         {
-                            result.Message = $"{src.Split('=')[0]}=w1024";
+                            result.Message = $"{src.Split('=')[0]}=w{width}";
                             result.Success = true;
                         }
 

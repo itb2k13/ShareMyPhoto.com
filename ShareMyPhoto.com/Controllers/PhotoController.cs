@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ShareMyPhoto.lib;
 using ShareMyPhoto.models;
+using shortid;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -20,32 +20,42 @@ namespace ShareMyPhoto.com.Controllers
     [ApiController]
     public class PhotoController : ControllerBase
     {
-        private static IAmazonS3 s3Client;
+        private static IAmazonS3 _s3Client;
         private readonly IScraper _scraper;
-        private readonly string bucketName;
+        private readonly string _defaultBucketName;
+        private readonly int _defaultWidth;
+        private readonly string[] _validBucketNames;
 
         public PhotoController(IConfiguration config, IScraper scraper)
         {
             _scraper = scraper;
-            s3Client = new AmazonS3Client(config.GetValue<string>("awsAccessKeyId"), config.GetValue<string>("awsSecretAccessKey"), RegionEndpoint.EUWest2);
-            bucketName = config.GetValue<string>("bucketName");
+            _s3Client = new AmazonS3Client(config.GetValue<string>("awsAccessKeyId"), config.GetValue<string>("awsSecretAccessKey"), RegionEndpoint.EUWest2);
+            _defaultBucketName = config.GetValue<string>("defaultBucketName");
+            _defaultWidth = config.GetValue<int>("defaultWidth");
+            _validBucketNames = config.GetValue<string>("validBucketNames").Split(';');
         }
 
         [HttpGet]
-        public async Task<UserResult> Get(string url)
+        public async Task<UserResult> Get(string url, string? bucketName, int? width)
         {
-
-            var userResult = new UserResult() { OriginalUrl = url };
+            var userResult = new UserResult(url, bucketName ?? _defaultBucketName, width ?? _defaultWidth, $"{ShortId.Generate(true, false, 8)}");
+            
+            if(!_validBucketNames.Contains(userResult.Input.BucketName))
+            {
+                userResult.ErrorMessage = "Specified bucket name does not exist.";
+                return userResult;
+            }                  
 
             if (url.StartsWith("https://photos.app.goo.gl/"))
             {
-                for (int i = 0; i <= 2; i++)
+                for (int i = 0; i <= 4; i++)
                 {
-                    var result = await _scraper.FindImageSourcesAsync(url);
+                    var result = await _scraper.FindImageSourcesAsync(url, userResult.Input.Width);
 
                     if (result.Success && result.Message.Length > 0)
                     {
-                        userResult.IntermediateUrl = result.Message;
+                        userResult.ErrorMessage = null;
+                        userResult.Input.IntermediateUrl = result.Message;
                         url = result.Message;
                         break;
                     }
@@ -55,7 +65,7 @@ namespace ShareMyPhoto.com.Controllers
                     }
                 }
 
-                if (userResult.IntermediateUrl == null)
+                if (userResult.Input.IntermediateUrl == null)
                 {
                     userResult.ErrorMessage = userResult.ErrorMessage ?? "Could not obtain image path.";
                     return userResult;
@@ -66,13 +76,12 @@ namespace ShareMyPhoto.com.Controllers
 
             if (downloadResult.Success && downloadResult.Data.Length > 0)
             {
-                var uploadResult = await UploadFileAsync(downloadResult.Data, $"{Guid.NewGuid().ToString()}-{Guid.NewGuid().ToString()}.jpg");
+                var uploadResult = await UploadFileAsync(downloadResult.Data, userResult.Input.BucketName, userResult.Input.KeyName);
 
                 if(uploadResult.Success && uploadResult.Message.Length > 0)
                 {
                     userResult.Success = true;
-                    userResult.ShareUrl = uploadResult.Message;
-                    userResult.SizeInBytes = downloadResult.Data.Length;
+                    userResult.Output.SizeInBytes = downloadResult.Data.Length;
                     return userResult;
                 }
                 else
@@ -105,14 +114,14 @@ namespace ShareMyPhoto.com.Controllers
             }
         }
 
-        private async Task<Result> UploadFileAsync(byte[] file, string keyName)
+        private async Task<Result> UploadFileAsync(byte[] file, string bucketName, string keyName)
         {
             try
             {
                 using (var fileToUpload = new MemoryStream(file))
                 {
-                    await new TransferUtility(s3Client).UploadAsync(fileToUpload, bucketName, keyName);
-                    return new Result { Message = $"https://{bucketName}.s3-eu-west-2.amazonaws.com/{keyName}", Success = true };
+                    await new TransferUtility(_s3Client).UploadAsync(fileToUpload, bucketName, keyName);
+                    return new Result { Message = keyName, Success = true };
                 }
             }
             catch (Exception e)

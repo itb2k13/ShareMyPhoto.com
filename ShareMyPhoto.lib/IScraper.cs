@@ -5,6 +5,6 @@ namespace ShareMyPhoto.lib
 {
     public interface IScraper
     {
-        Task<Result> FindImageSourcesAsync(string url);
+        Task<Result> FindImageSourcesAsync(string url, int width);
     }
 }
