@@ -1,0 +1,55 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-image: url('https://ph.otos.online/ORMMc7Cg');
+    background-size: cover;
+}
+
+.placeholder-text-light::placeholder {
+    color: rgb(180, 177, 177);
+    opacity: 1;
+}
+
+.placeholder-text-light:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: rgb(180, 177, 177);
+}
+
+.placeholder-text-light::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: rgb(180, 177, 177);
+}
+
+.bg-shadow {
+    background-color: rgba(0, 0, 0, 0.3) !important;
+    border-radius: 5px;
+}
+
+.bg-shadow-05 {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.btn-50 {
+    height: 50px;
+    width: 50px;
+}
+
+.h-80px {
+    height: 80px !important;
+}
+
+.card {
+    background-color: unset !important;
+}
+
+.mat-progress-spinner circle,
+.mat-spinner circle {
+    stroke: #fff;
+}
