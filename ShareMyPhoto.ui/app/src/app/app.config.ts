@@ -23,6 +23,7 @@ export default {
         'https://ph.otos.online/AIRQ5tfN',
         'https://ph.otos.online/j7T5PuJM',
         'https://ph.otos.online/fYEXfGAu',
+        'https://ph.otos.online/a5dOxFYk',
 
     ],
     resourceServer: {

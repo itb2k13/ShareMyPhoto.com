@@ -26,19 +26,9 @@ export class ApiService {
     return this.http.get<ApiResponse>(`${this.apiUrl}${url}`, { headers: this.httpHeaders() })
       .pipe(
         tap(cases => console.log('fetched content')),
-        catchError(this.handleError('get', null))
+        catchError(err => { return throwError(err); })
       );
   }
 
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
-  }
 
 }

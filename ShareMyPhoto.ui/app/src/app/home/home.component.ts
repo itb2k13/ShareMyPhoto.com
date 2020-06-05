@@ -14,6 +14,7 @@ export class HomeComponent implements OnInit {
   Output: string;
   BgImages: string[];
   BgImage: string;
+  Message: string;
   isLoadingResults;
 
   constructor(private api: ApiService) {
@@ -34,8 +35,10 @@ export class HomeComponent implements OnInit {
     this.api.get(this.Input)
       .subscribe((res: ApiResponse) => {
         this.Output = res?.output?.share || null;
+        this.Message = res?.errorMessage;
         this.isLoadingResults = false;
       }, err => {
+        this.Message = err?.error.message;
         this.isLoadingResults = false;
       });
 
