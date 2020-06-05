@@ -18,7 +18,7 @@ export class ApiService {
 
   private httpHeaders() {
     return new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     });
   }
 

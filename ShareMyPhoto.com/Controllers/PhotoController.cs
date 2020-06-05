@@ -40,6 +40,12 @@ namespace ShareMyPhoto.com.Controllers
         {
             var userResult = new UserResult(url, bucketName ?? _defaultBucketName, width ?? _defaultWidth, $"{ShortId.Generate(true, false, 8)}");
             
+            if(!url.Exists())
+            {
+                userResult.ErrorMessage = "Url does not exist.";
+                return userResult;
+            }
+
             if(!_validBucketNames.Contains(userResult.Input.BucketName))
             {
                 userResult.ErrorMessage = "Specified bucket name does not exist.";

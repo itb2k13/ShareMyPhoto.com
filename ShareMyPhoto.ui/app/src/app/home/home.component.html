@@ -1,7 +1,10 @@
+<div [style.backgroundImage]="'url('+BgImage+')'" class="w-100 h-100 position-absolute bg-cover">
+
+</div>
 <div class="position-absolute p-3" *ngIf="isLoadingResults">
     <mat-spinner></mat-spinner>
 </div>
-<mdb-card class="col-12 col-md-8 m-auto h-100 p-0 d-flex text-center  shadow-none">
+<mdb-card class="col-12 col-sm-12 col-md-11 col-lg-8 m-auto h-100 p-0 d-flex text-center  shadow-none">
 
     <div class="w-100 m-auto ">
         <div class="bg-shadow p-2 p-md-3 mb-4">
@@ -11,15 +14,17 @@
                     <input class="form-control w-100 h-80px h5-responsive font-weight-light bg-shadow-05 border-0 text-white placeholder-text-light " type="text" [(ngModel)]="Input" placeholder="Url -> e.g. https://photos.app.goo.gl/dbcEejWnVfKcwCfK7">
 
                     <div class="row pt-2" *ngIf="Output">
-                        <div class="col-12">
+                        <div class="col-12 col-sm-8 align-self-center">
                             <input class="w-100 form-control font-weight-light border-dark " type="text" [(ngModel)]="Output" placeholder="">
                         </div>
-                        <div class="col-12">
-                            <a href="{{Output}}" alt="open" rel="noopener" target="_blank" mdbBtn color="" class="bg-shadow-05 waves-light" mdbWavesEffect>
+                        <div class="col-12 col-sm-4 align-self-center">
+                            <a href="{{Output}}" alt="open" rel="noopener" target="_blank" mdbBtn color="" class="btn btn-primary bg-shadow-05 waves-light" mdbWavesEffect>
                                 <mdb-icon icon="hand-pointer" class="fas text-white"></mdb-icon>
+
                             </a>
-                            <a rel="noopener" alt="copy" [cdkCopyToClipboard]="Output" mdbBtn color="" class="bg-shadow-05 waves-light" mdbWavesEffect>
+                            <a rel="noopener" alt="copy" [cdkCopyToClipboard]="Output" mdbBtn color="" class="btn btn-primary bg-shadow-05 waves-light" mdbWavesEffect>
                                 <mdb-icon icon="copy" class="fas text-white"></mdb-icon>
+
                             </a>
                         </div>
                     </div>
@@ -28,7 +33,7 @@
             </div>
         </div>
         <div>
-            <button [disabled]="isLoadingResults" class="btn btn-secondary btn-lg col-6" (click)="getLink();">Get link</button>
+            <button [disabled]="isLoadingResults" class="btn btn-light btn-lg col-6" (click)="getLink();">Generate link</button>
         </div>
     </div>
 

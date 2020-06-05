@@ -8,7 +8,6 @@ body {
 body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
-    background-image: url('https://ph.otos.online/ORMMc7Cg');
     background-size: cover;
 }
 
@@ -25,6 +24,10 @@ body {
 .placeholder-text-light::-ms-input-placeholder {
     /* Microsoft Edge */
     color: rgb(180, 177, 177);
+}
+
+.bg-cover {
+    background-size: cover;
 }
 
 .bg-shadow {
