@@ -24,6 +24,14 @@ export default {
         'https://ph.otos.online/j7T5PuJM',
         'https://ph.otos.online/fYEXfGAu',
         'https://ph.otos.online/a5dOxFYk',
+        'https://ph.otos.online/n60KgTMU',
+        'https://ph.otos.online/ET1xf9IU',
+        'https://ph.otos.online/JQAvQlCI',
+        'https://ph.otos.online/bOrf7AnT',
+        'https://ph.otos.online/C41RxbMu',
+        'https://ph.otos.online/Is5vCER6',
+        'https://ph.otos.online/3en10ROq',
+        'https://ph.otos.online/I9Pz6c92'
 
     ],
     resourceServer: {
