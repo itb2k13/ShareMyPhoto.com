@@ -10,6 +10,9 @@ import { HomeComponent } from './home/home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { StorageServiceModule } from 'ngx-webstorage-service';
+import { LocalStoreService } from './local-store.service';
+import { ApiService } from './api.service';
 
 @NgModule({
   declarations: [
@@ -26,8 +29,9 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
     MatCardModule,
     MDBBootstrapModule.forRoot(),
     MatProgressSpinnerModule,
+    StorageServiceModule
   ],
-  providers: [],
+  providers: [ApiService, LocalStoreService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

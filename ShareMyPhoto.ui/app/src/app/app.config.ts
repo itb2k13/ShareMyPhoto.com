@@ -31,7 +31,26 @@ export default {
         'https://ph.otos.online/C41RxbMu',
         'https://ph.otos.online/Is5vCER6',
         'https://ph.otos.online/3en10ROq',
-        'https://ph.otos.online/I9Pz6c92'
+        'https://ph.otos.online/I9Pz6c92',
+        'https://ph.otos.online/qWbuaJwk',
+        'https://ph.otos.online/nVvwFlDT',
+        'https://ph.otos.online/IDXTFNXX',
+        'https://ph.otos.online/mWDDlmU1',
+        'https://ph.otos.online/rsBoCUIf',
+        'https://ph.otos.online/9YUoEH9p',
+        'https://ph.otos.online/8GX9ALU8',
+        'https://ph.otos.online/sWYg1vT6',
+        'https://ph.otos.online/USabRTGh',
+        'https://ph.otos.online/tpV9I2I1',
+        'https://ph.otos.online/3JXN7wXO',
+        'https://ph.otos.online/fYDVG7Hp',
+        'https://ph.otos.online/aPWSkOgl',
+        'https://ph.otos.online/cNaAFxer',
+        'https://ph.otos.online/MqGlHSLh',
+        'https://ph.otos.online/Y84avvRc',
+        'https://ph.otos.online/UtnFnlC1',
+        'https://ph.otos.online/57PnkIeD',
+        'https://ph.otos.online/kVneb2dJ'
 
     ],
     resourceServer: {

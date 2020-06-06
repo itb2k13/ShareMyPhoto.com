@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
 import { ApiResponse } from '../api-response';
 import config from '../app.config';
+import { LocalStoreService } from '../local-store.service';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +18,7 @@ export class HomeComponent implements OnInit {
   Message: string;
   isLoadingResults;
 
-  constructor(private api: ApiService) {
+  constructor(private api: ApiService, private store: LocalStoreService) {
     this.Input = '';
     this.Output = '';
     this.isLoadingResults = false;
@@ -35,6 +36,7 @@ export class HomeComponent implements OnInit {
     this.api.get(this.Input)
       .subscribe((res: ApiResponse) => {
         this.Output = res?.output?.share || null;
+        this.store.saveLocal(res?.output?.share);
         this.Message = res?.errorMessage;
         this.isLoadingResults = false;
       }, err => {
@@ -42,6 +44,10 @@ export class HomeComponent implements OnInit {
         this.isLoadingResults = false;
       });
 
+  }
+
+  public getHistory() {
+    return this.store.getLocal().slice(0).slice(-5);
   }
 
 }

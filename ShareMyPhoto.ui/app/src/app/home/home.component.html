@@ -1,13 +1,21 @@
 <div [style.backgroundImage]="'url('+BgImage+')'" class="w-100 h-100 position-absolute bg-cover">
 
 </div>
-<div class="position-absolute p-3" *ngIf="isLoadingResults">
-    <mat-spinner></mat-spinner>
-</div>
-<mdb-card class="col-12 col-sm-12 col-md-11 col-lg-8 m-auto h-100 p-0 d-flex text-center  shadow-none">
 
+<mdb-card class="col-12 h-100 p-0 d-flex text-center  shadow-none">
+    <div class="position-absolute d-flex justify-content-around w-100">
+        <div class="view overlay d-inline-block p-1 " *ngFor="let n of getHistory();">
+            <img src="{{n}}" alt="thumbnail" class="img-thumbnail img-fluid  " style="width: 150px">
+            <a href="{{n}}" target="_blank">
+                <div class="mask waves-effect rgba-white-slight" mdbWavesEffect></div>
+            </a>
+        </div>
+    </div>
+    <div class="position-absolute p-3" *ngIf="isLoadingResults">
+        <mat-spinner></mat-spinner>
+    </div>
     <div class="w-100 m-auto ">
-        <div class="bg-shadow p-2 p-md-3 mb-4">
+        <div class="bg-shadow col-12 col-md-8 m-auto p-2 p-md-3">
             <div class="form-inline w-100">
                 <div class="w-100">
 
@@ -33,9 +41,8 @@
             </div>
         </div>
         <div>
-            <button [disabled]="isLoadingResults" class="btn btn-light btn-lg col-6" (click)="getLink();">Generate link</button>
+            <button [disabled]="isLoadingResults" class="btn btn-light btn-lg col-4 font-weight-light font-small" (click)="getLink();">Generate link</button>
             <div class="bg-shadow-05 mt-3 orange-text h3-responsive">{{Message}}</div>
         </div>
     </div>
-
 </mdb-card>
