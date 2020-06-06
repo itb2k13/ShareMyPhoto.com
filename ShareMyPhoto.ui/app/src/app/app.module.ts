@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
@@ -13,6 +13,13 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { StorageServiceModule } from 'ngx-webstorage-service';
 import { LocalStoreService } from './local-store.service';
 import { ApiService } from './api.service';
+import { AppConfigService } from './app-config.service';
+
+const appInitializerFn = (appConfig: AppConfigService) => {
+  return () => {
+    return appConfig.loadAppConfig();
+  };
+};
 
 @NgModule({
   declarations: [
@@ -31,7 +38,14 @@ import { ApiService } from './api.service';
     MatProgressSpinnerModule,
     StorageServiceModule
   ],
-  providers: [ApiService, LocalStoreService],
+  providers: [ApiService, LocalStoreService,
+    AppConfigService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appInitializerFn,
+      multi: true,
+      deps: [AppConfigService]
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

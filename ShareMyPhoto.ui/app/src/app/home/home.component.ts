@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
 import { ApiResponse } from '../api-response';
-import config from '../app.config';
 import { LocalStoreService } from '../local-store.service';
+import { AppConfigService } from '../app-config.service';
 
 @Component({
   selector: 'app-home',
@@ -18,11 +18,11 @@ export class HomeComponent implements OnInit {
   Message: string;
   isLoadingResults;
 
-  constructor(private api: ApiService, private store: LocalStoreService) {
+  constructor(private api: ApiService, private store: LocalStoreService, private config: AppConfigService) {
     this.Input = '';
     this.Output = '';
     this.isLoadingResults = false;
-    this.BgImages = config.bgImages;
+    this.BgImages = config.getConfig().bgImages;
     this.BgImage = this.BgImages[Math.floor(Math.random() * this.BgImages.length)];
   }
 
