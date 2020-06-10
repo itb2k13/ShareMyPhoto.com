@@ -15,34 +15,40 @@
         <mat-spinner></mat-spinner>
     </div>
     <div class="w-100 m-auto ">
-        <div class="bg-shadow col-12 col-md-8 m-auto p-2 p-md-3">
+        <div class="bg-shadow col-12 col-md-8 m-auto">
             <div class="form-inline w-100">
-                <div class="w-100">
 
-                    <input class="form-control w-100 h-80px h5-responsive font-weight-light bg-shadow-05 border-0 text-white placeholder-text-light " type="text" [(ngModel)]="Input" placeholder="Url -> e.g. https://photos.app.goo.gl/dbcEejWnVfKcwCfK7">
-
-                    <div class="row pt-2" *ngIf="Output">
-                        <div class="col-12 col-sm-8 align-self-center">
-                            <input class="w-100 form-control font-weight-light border-dark " type="text" [(ngModel)]="Output" placeholder="">
-                        </div>
-                        <div class="col-12 col-sm-4 align-self-center">
-                            <a href="{{Output}}" alt="open" rel="noopener" target="_blank" mdbBtn color="" class="btn btn-primary bg-shadow-05 waves-light" mdbWavesEffect>
-                                <mdb-icon icon="hand-pointer" class="fas text-white"></mdb-icon>
-
-                            </a>
-                            <a rel="noopener" alt="copy" [cdkCopyToClipboard]="Output" mdbBtn color="" class="btn btn-primary bg-shadow-05 waves-light" mdbWavesEffect>
-                                <mdb-icon icon="copy" class="fas text-white"></mdb-icon>
-
-                            </a>
-                        </div>
+                <div class="md-form w-100 input-group mt-3 mb-3">
+                    <input class="form-control h-60px h5-responsive font-weight-light bg-shadow-05 border-0 text-white placeholder-text-light " type="text" [(ngModel)]="Input" placeholder="Url -> e.g. https://photos.app.goo.gl/dbcEejWnVfKcwCfK7" />
+                    <div class="input-group-append">
+                        <button [disabled]="isLoadingResults" class="btn btn-success font-weight-light font-small" mdbWavesEffect (click)="getLink();">Go</button>
                     </div>
-
                 </div>
+
+                <div *ngIf="Message" class="m-auto bg-shadow-05 p-2  orange-text h3-responsive">{{Message}}</div>
+
+
             </div>
-        </div>
-        <div>
-            <button [disabled]="isLoadingResults" class="btn btn-light btn-lg col-4 font-weight-light font-small" (click)="getLink();">Generate link</button>
-            <div class="bg-shadow-05 mt-3 orange-text h3-responsive">{{Message}}</div>
+
+            <div class="form-inline w-100" *ngIf="Output">
+
+                <div class="md-form w-100 input-group mb-3">
+                    <input class="form-control font-weight-light text-light disabled bg-shadow-05 border-dark " type="text" [(ngModel)]="Output" placeholder="">
+
+                    <div class="input-group-append">
+                        <a href="{{Output}}" alt="open" rel="noopener" target="_blank" color="" class="btn btn-primary bg-shadow-05 border-0 text-white waves-light" mdbWavesEffect>
+                            <mdb-icon icon="hand-pointer" class="fas text-white"></mdb-icon>
+                            Open
+                        </a>
+                        <a rel="noopener" alt="copy" [cdkCopyToClipboard]="Output" color="" class="btn btn-primary bg-shadow-05 border-0 text-white waves-light" mdbWavesEffect>
+                            <mdb-icon icon="copy" class="fas text-white"></mdb-icon>
+                            Copy
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
     </div>
 </mdb-card>
