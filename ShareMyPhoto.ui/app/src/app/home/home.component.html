@@ -23,6 +23,34 @@
                     <div class="input-group-append">
                         <button [disabled]="isLoadingResults" class="btn btn-success font-weight-light font-small" mdbWavesEffect (click)="getLink();">Go</button>
                     </div>
+                    <div class="input-group-append">
+                        <button class="btn btn-dark waves-light font-weight-light font-small" (click)="test.toggle()" mdbWavesEffect>
+                            <i class="fas fa-caret-down"></i>
+                      </button>
+                    </div>
+
+                </div>
+
+                <div class="w-100" mdbCollapse #test="bs-collapse">
+                    <div class="m-auto pb-2 white-text">
+                        <!-- Default inline 1-->
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="defaultInline1" [(ngModel)]="BucketName" value="ph.otos.online" name="BucketName" mdbInput>
+                            <label class="custom-control-label" for="defaultInline1">ph.otos.online</label>
+                        </div>
+
+                        <!-- Default inline 2-->
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="defaultInline2" [(ngModel)]="BucketName" value="ph.otos.club" name="BucketName" mdbInput>
+                            <label class="custom-control-label" for="defaultInline2">ph.otos.club</label>
+                        </div>
+
+                        <!-- Default inline 3-->
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="defaultInline3" [(ngModel)]="BucketName" value="media.stephsmith.online" name="BucketName" mdbInput>
+                            <label class="custom-control-label" for="defaultInline3">media.stephsmith.online</label>
+                        </div>
+                    </div>
                 </div>
 
                 <div *ngIf="Message" class="m-auto bg-shadow-05 p-2  orange-text h3-responsive">{{Message}}</div>

@@ -22,8 +22,8 @@ export class ApiService {
     });
   }
 
-  get(url: string): Observable<ApiResponse> {
-    return this.http.get<ApiResponse>(`${this.apiUrl}${url}`, { headers: this.httpHeaders() })
+  get(url: string, bucketName: string): Observable<ApiResponse> {
+    return this.http.get<ApiResponse>(`${this.apiUrl}${url}&bucketName=${bucketName}`, { headers: this.httpHeaders() })
       .pipe(
         tap(cases => console.log('fetched content')),
         catchError(err => { return throwError(err); })
